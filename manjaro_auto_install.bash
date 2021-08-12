@@ -97,6 +97,9 @@ bat \
 pypy3 \
 tmux \
 zsh \
+git \
+docker \
+yay \
 --noconfirm"
 
 pamac_install_from_aur="sudo pamac install bootiso \
@@ -167,9 +170,12 @@ sudo cp -v $current_working_dir/binaries/img /usr/bin
 mkdir -p ~/Alexzander__
 git clone https://github.com/alexzanderr/manjaro-21-xfce-settings
 
-# install lyra cursors
-cd ~/Alexzander__/manjaro-21-xfce-settings/lyra_cursors
-sudo ./install.sh
+# install lyra cursors (all of them)
+# for archive in "$(ls $current_working_dir/archives)"
+# do
+    # decompress every tar gz and install cursors to
+    # /usr/share/icons/...
+# done
 
 # clone and build lite editor
 mkdir -p ~/Applications__
@@ -214,7 +220,16 @@ cd lite
 #     darktable: Alternative to Adobe Lightroom.
 
 
+# config docker
+sudo groupadd docker
+sudo gpasswd -a ${USER} docker
+sudo systemctl enable docker
+sudo systemctl start docker
+newgrp docker
 
+# enable teamviewer
+sudo systemctl enable teamviewerd
+sudo systemctl start teamviewerd
 
 # here you need to select from prompt
 sudo pacman -S virtualbox
