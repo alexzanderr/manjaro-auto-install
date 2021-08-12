@@ -1,0 +1,383 @@
+#!/usr/bin/bash
+
+: '
+Black        0;30     Dark Gray     1;30
+Red          0;31     Light Red     1;31
+Green        0;32     Light Green   1;32
+Brown/Orange 0;33     Yellow        1;33
+Blue         0;34     Light Blue    1;34
+Purple       0;35     Light Purple  1;35
+Cyan         0;36     Light Cyan    1;36
+Light Gray   0;37     White         1;37
+'
+
+function decision_prompting () {
+    read -p ">>> are sure you want to proceed? [y(es) or <enter> | n(o)]: " decision
+
+    if [[ "$decision" = "y" ]]; then
+        echo "proceeding..."
+
+    elif [[ "$decision" = "" ]]; then
+        read -p ">>> press again <enter> to proceed: " decision
+
+        if [[ "$decision" = "" ]]; then
+            echo "proceeding..."
+        else
+            echo "aborted."
+            exit
+        fi
+    else
+        echo "aborted."
+        exit
+    fi
+}
+decision_prompting
+
+
+
+b=$(tput bold)
+RED='\033[0;31m'
+e='\033[0m'
+
+YELLOW="\033[1;33m"
+
+GREEN="\033[0;32m"
+CYAN="\033[0;36m"
+WHITE="\033[1;37m"
+BLUE="\033[0;34m"
+PURPLE="\033[0;35m"
+
+
+
+function PRINT_COLORED_RED_AND_RUN () {
+    printf "\n\n${GREEN}${b}>>>${e} ${RED}${b}$1${e} [ ${YELLOW}${b}running${e} ]\n\n"
+    eval $1
+}
+
+function pause_execution () {
+    read -p "$(echo -e "${b}\n[press${e} ${GREEN}${b}<enter>${e} ${b}to continue]:${e} ")"
+}
+
+
+# home
+cd /home/alexzander
+
+# i dont know
+# this is not good, this caused the pc not to boot 
+# successfully from first time sometimes
+# PRINT_COLORED_RED_AND_RUN "sudo pacman-mirrors -f5"
+# pause_execution
+
+# big update
+PRINT_COLORED_RED_AND_RUN "sudo pacman -Syyu"
+pause_execution
+
+# all possible applications
+pacman_install_all="sudo pacman -S telegram-desktop \
+obs-studio \
+brave \
+openssh \
+atom \
+psensor \
+lm_sensors \
+pa-applet \
+hddtemp \
+xfce4-cpufreq-plugin \
+xfce4-goodies \
+xfce4-sensors-plugin \
+xfce4-cpugraph-plugin \
+xfce4-systemload-plugin \
+python-pip \
+tk \
+smartmontools \
+qbittorrent \
+pypy3 \
+vlc \
+putty \
+nmap \
+steam \
+libreoffice-still \
+make \
+appimagelauncher \
+arc-gtk-theme \
+plank \
+neofetch \
+discord \
+pydf \
+tree \
+yay \
+jdk-openjdk \
+dotnet-sdk \
+tesseract \
+ffmpeg \
+xbindkeys \
+sshpass \
+xclip \
+simple-scan \
+wimlib \
+neovim-qt \
+alacritty \
+xdotools \
+ttf-dejavu \
+noto-font-emoji \
+keepassxc \
+indicator-sensors \
+make \
+figlet \
+speedtest-cli \
+stow \
+qt-creator \
+blueman \
+mercurial \
+wireshark-qt \
+wireshark-cli \
+exa \
+task \
+timew \
+taskwarrior-tui \
+rust \
+the_silver_searcher \
+clamav \
+gtop \
+conky \
+appmenu-gtk-module \
+vala-panel-appmenu-common \
+vala-panel-appmenu-registrar \
+vala-panel-appmenu-xfce \
+cheese \
+cmake \
+filezilla \
+kdenlive \
+--noconfirm"
+PRINT_COLORED_RED_AND_RUN "$pacman_install_all"
+pause_execution
+
+pamac_install_from_aur="sudo pamac install bootiso \
+git-ftp \
+mdr \
+glow \
+neovim-nightly-bin \
+lyrebird \
+--no-confirm
+"
+
+pip_install_packages="pip install wpm \
+
+"
+
+sudo systemctl enable bluetooth.service
+
+# .fonts
+PRINT_COLORED_RED_AND_RUN "sudo cp -fvr /home/alexzander/install_manjaro/.fonts /home/alexzander/.fonts"
+PRINT_COLORED_RED_AND_RUN "tree /home/alexzander/.fonts"
+
+pause_execution
+
+
+
+# appending python path to .profile
+PRINT_COLORED_RED_AND_RUN "sudo echo 'export PYTHONPATH=\$PYTHONPATH:/home/alexzander/Alexzander__/programming/python' >> /home/alexzander/.profile"
+PRINT_COLORED_RED_AND_RUN "cat /home/alexzander/.profile"
+printf "\n"
+
+pause_execution
+
+# overwrites the .bashrc with custom
+PRINT_COLORED_RED_AND_RUN "sudo cp -fv /home/alexzander/install_manjaro/.bashrc /home/alexzander/.bashrc"
+PRINT_COLORED_RED_AND_RUN "cat /home/alexzander/.bashrc"
+printf "\n"
+
+pause_execution
+
+
+# .check_path.py for .bashrc
+PRINT_COLORED_RED_AND_RUN "sudo chmod u+x /home/alexzander/install_manjaro/.check_path.py"
+PRINT_COLORED_RED_AND_RUN "sudo cp -fv /home/alexzander/install_manjaro/.check_path.py /home/alexzander/.check_path.py"
+PRINT_COLORED_RED_AND_RUN "cat /home/alexzander/.check_path.py"
+printf "\n"
+
+pause_execution
+
+
+# google search monitor
+PRINT_COLORED_RED_AND_RUN "sudo chmod u+x /home/alexzander/install_manjaro/google_search_monitor"
+PRINT_COLORED_RED_AND_RUN "sudo cp -fv /home/alexzander/install_manjaro/google_search_monitor /home/alexzander/google_search_monitor"
+PRINT_COLORED_RED_AND_RUN "sudo cp -fv /home/alexzander/install_manjaro/google_search_monitor /usr/bin"
+PRINT_COLORED_RED_AND_RUN "cat /home/alexzander/google_search_monitor"
+printf "\n"
+
+pause_execution
+
+
+# .strip_bash_command.py for .bashrc
+PRINT_COLORED_RED_AND_RUN "sudo chmod u+x /home/alexzander/install_manjaro/.strip_bash_command.py"
+PRINT_COLORED_RED_AND_RUN "sudo cp -fv /home/alexzander/install_manjaro/.strip_bash_command.py /home/alexzander/.strip_bash_command.py"
+PRINT_COLORED_RED_AND_RUN "cat /home/alexzander/.strip_bash_command.py"
+printf "\n"
+
+pause_execution
+
+
+# .netrc
+PRINT_COLORED_RED_AND_RUN "sudo cp -fv /home/alexzander/install_manjaro/.netrc /home/alexzander/.netrc"
+PRINT_COLORED_RED_AND_RUN "sudo cat /home/alexzander/.netrc"
+printf "\n"
+
+pause_execution
+
+# ftp alexzander.tech auto login
+PRINT_COLORED_RED_AND_RUN "sudo chmod u+x /home/alexzander/install_manjaro/ftp_alexzander_tech"
+PRINT_COLORED_RED_AND_RUN "sudo cp -v /home/alexzander/install_manjaro/ftp_alexzander_tech /home/alexzander/ftp_alexzander_tech"
+# in order to access by just writing its name without ./
+PRINT_COLORED_RED_AND_RUN "sudo cp -v /home/alexzander/install_manjaro/ftp_alexzander_tech /usr/bin"
+PRINT_COLORED_RED_AND_RUN "cat /home/alexzander/ftp_alexzander_tech"
+printf "\n"
+
+pause_execution
+
+
+# my custom copy function
+PRINT_COLORED_RED_AND_RUN "sudo chmod u+x /home/alexzander/install_manjaro/copy"
+PRINT_COLORED_RED_AND_RUN "sudo cp -fv /home/alexzander/install_manjaro/copy /home/alexzander/copy"
+# in order to access by just writing its name without ./
+PRINT_COLORED_RED_AND_RUN "sudo cp -v /home/alexzander/install_manjaro/copy /usr/bin"
+PRINT_COLORED_RED_AND_RUN "cat /home/alexzander/copy"
+printf "\n"
+
+pause_execution
+
+# ssh manjaro sony device
+PRINT_COLORED_RED_AND_RUN "sudo chmod u+x /home/alexzander/install_manjaro/ssh_to_manjaro_sony"
+PRINT_COLORED_RED_AND_RUN "sudo cp -v /home/alexzander/install_manjaro/ssh_to_manjaro_sony /home/alexzander/ssh_to_manjaro_sony"
+# in order to access by just writing its name without ./
+PRINT_COLORED_RED_AND_RUN "sudo cp -v /home/alexzander/install_manjaro/ssh_to_manjaro_sony /usr/bin"
+PRINT_COLORED_RED_AND_RUN "cat /home/alexzander/ssh_to_manjaro_sony"
+printf "\n"
+
+pause_execution
+
+
+
+
+
+# remove Applications__ folder
+if [[ -d "Applications__" ]]; then
+    echo "'Applications__' exists. removing... and creating again"
+    PRINT_COLORED_RED_AND_RUN "sudo rm -rf Applications__"
+
+    PRINT_COLORED_RED_AND_RUN "mkdir Applications__" # empty
+    PRINT_COLORED_RED_AND_RUN "mkdir Applications__/shell" # empty
+    PRINT_COLORED_RED_AND_RUN "mkdir Applications__/PythonApplications" # empty
+else
+    echo "'Applications__' not found ... creating"
+    PRINT_COLORED_RED_AND_RUN "mkdir Applications__" # empty
+    PRINT_COLORED_RED_AND_RUN "mkdir Applications__/shell" # empty
+    PRINT_COLORED_RED_AND_RUN "mkdir Applications__/PythonApplications" # empty
+fi
+
+
+
+pause_execution
+
+
+
+# sshd
+PRINT_COLORED_RED_AND_RUN "sudo systemctl enable sshd.service"
+PRINT_COLORED_RED_AND_RUN "sudo systemctl start sshd.service"
+
+
+
+# python modules
+PRINT_COLORED_RED_AND_RUN "pip install pyinstaller playsound pyperclip opencv-python colored_traceback wave pydub gtts pyttsx3 pytesseract numpy matplotlib bs4 numba pyzbar notify2 pytz SpeechRecognition requests_html datedelta tqdm selenium imageio pyautogui moviepy pyowm jedi buildozer Pillow pynput pyaudio youtube_dl"
+
+
+pause_execution
+
+
+# bootiso
+PRINT_COLORED_RED_AND_RUN "cd /home/alexzander/Applications__"
+PRINT_COLORED_RED_AND_RUN "git clone --branch latest https://github.com/jsamr/bootiso.git"
+PRINT_COLORED_RED_AND_RUN "cd bootiso"
+PRINT_COLORED_RED_AND_RUN "sudo make install"
+
+
+pause_execution
+
+
+# install vs code
+PRINT_COLORED_RED_AND_RUN "cd /home/alexzander/Applications__"
+PRINT_COLORED_RED_AND_RUN "wget https://alexzander.tech/wget/code.tar.gz"
+PRINT_COLORED_RED_AND_RUN "tar -xzvf code.tar.gz" # nu e -C pentru ca are el folderul lui
+PRINT_COLORED_RED_AND_RUN "sudo cp -v /home/alexzander/install_manjaro/vscode.desktop /usr/share/applications" # acum se vede la search
+PRINT_COLORED_RED_AND_RUN "sudo cat /usr/share/applications/vscode.desktop"
+printf "\n"
+
+
+pause_execution
+
+
+# install dmenu
+PRINT_COLORED_RED_AND_RUN "cd /home/alexzander/Applications__"
+PRINT_COLORED_RED_AND_RUN "wget https://alexzander.tech/wget/dmenu.tar.gz"
+PRINT_COLORED_RED_AND_RUN "mkdir dmenu.5.0"
+PRINT_COLORED_RED_AND_RUN "tar -zxvf dmenu.tar.gz -C dmenu.5.0"
+PRINT_COLORED_RED_AND_RUN "cd dmenu.5.0 && sudo make clean install"
+# xbindkeysrc for dmenu (CONTROL + SHIFT + D)
+PRINT_COLORED_RED_AND_RUN "sudo cp -v /home/alexzander/install_manjaro/.xbindkeysrc /home/alexzander/.xbindkeysrc"
+PRINT_COLORED_RED_AND_RUN "cat /home/alexzander/.xbindkeysrc"
+printf "\n"
+
+pause_execution
+
+
+
+# install 202020Rule
+PRINT_COLORED_RED_AND_RUN "cd /home/alexzander/Applications__/PythonApplications"
+PRINT_COLORED_RED_AND_RUN "wget https://alexzander.tech/wget/202020Rule.tar.gz"
+PRINT_COLORED_RED_AND_RUN "mkdir 202020Rule && tar -zxvf 202020Rule.tar.gz -C 202020Rule && cd 202020Rule"
+PRINT_COLORED_RED_AND_RUN "sudo cp -v ./202020Rule.desktop /home/alexzander/.config/autostart/"
+PRINT_COLORED_RED_AND_RUN "sudo cp -v ./202020Rule.sh /home/alexzander/Applications__/shell"
+
+
+pause_execution
+
+
+# install uptime
+PRINT_COLORED_RED_AND_RUN "cd /home/alexzander/Applications__/PythonApplications"
+PRINT_COLORED_RED_AND_RUN "wget https://alexzander.tech/wget/uptime.tar.gz"
+PRINT_COLORED_RED_AND_RUN "mkdir uptime && tar -zxvf uptime.tar.gz -C uptime && cd uptime"
+PRINT_COLORED_RED_AND_RUN "sudo cp -v ./uptime.desktop /home/alexzander/.config/autostart/"
+PRINT_COLORED_RED_AND_RUN "sudo cp -v ./uptime.sh /home/alexzander/Applications__/shell"
+
+pause_execution
+
+
+# install PsaltireaReminder
+PRINT_COLORED_RED_AND_RUN "cd /home/alexzander/Applications__/PythonApplications"
+PRINT_COLORED_RED_AND_RUN "wget https://alexzander.tech/wget/PsaltireaReminder.tar.gz"
+PRINT_COLORED_RED_AND_RUN "mkdir PsaltireaReminder && tar -zxvf PsaltireaReminder.tar.gz -C PsaltireaReminder && cd PsaltireaReminder"
+PRINT_COLORED_RED_AND_RUN "sudo cp -v ./PsaltireaReminder.desktop /home/alexzander/.config/autostart/"
+PRINT_COLORED_RED_AND_RUN "sudo cp -v ./PsaltireaReminder.sh /home/alexzander/Applications__/shell"
+
+pause_execution
+
+
+PRINT_COLORED_RED_AND_RUN "cp -fv /home/alexzander/install_manjaro/atom-packages-list.txt /home/alexzander/atom-packages-list.txt"
+PRINT_COLORED_RED_AND_RUN "apm install --packages-file /home/alexzander/atom-packages-list.txt"
+
+pause_execution
+
+
+PRINT_COLORED_RED_AND_RUN "sudo pamac build teamviewer --no-confirm"
+PRINT_COLORED_RED_AND_RUN "sudo teamviewer --daemon start"
+
+
+function reboot_prompt () {
+    read -p "$(echo -e "${b}\n[press${e} ${GREEN}${b}<enter>${e} ${b}to reboot]:${e} ")"
+}
+
+reboot_prompt
+echo -e "\nrebooting... in 2 seconds."
+sleep 2
+reboot
+
