@@ -31,7 +31,7 @@ function do_you_want_execution_pause () {
     fi
 }
 
-source $(pwd)/imports/colors.bash
+source /home/alexzander/Alexzander__/manjaro-auto-install/imports/colors.bash
 
 function pause_execution () {
     read -p "$(echo -e "${bold}\n[press${endc} ${green}${bold}<enter>${endc} ${bold}to continue]:${endc} ")"

@@ -20,6 +20,9 @@ decision_prompting
 pacman_update_force="sudo pacman -Syyu"
 
 pacman_install_all="sudo pacman -S telegram-desktop \
+fzy \
+lolcat \
+catimg \
 obs-studio \
 openssh \
 atom \
@@ -171,8 +174,7 @@ mkdir -p ~/Alexzander__
 git clone https://github.com/alexzanderr/manjaro-21-xfce-settings
 
 # install lyra cursors (all of them)
-# for archive in "$(ls $current_working_dir/archives)"
-# do
+for archive in "$(ls $current_working_dir/archives)"; do
     # decompress every tar gz and install cursors to
     # /usr/share/icons/...
 # done
@@ -219,6 +221,29 @@ cd lite
 #     Synfig: Alternative to Adobe Animate. ...
 #     darktable: Alternative to Adobe Lightroom.
 
+# install zsh dependencies
+$current_working_dir/installers/zsh_install.bash
+
+# install tmux dependencies
+$current_working_dir/installers/tmux_install.bash
+
+# make symlink of default home folders that come with OS
+home_folders="~/Alexzander__/manjaro-21-xfce/home_folders"
+# curr_dir=$(pwd)
+
+for item in $(ls $home_folders)
+do
+    if [[ -d $home_folders/$item ]]; then
+        ln -vs $home_folders/$item ~/$item
+    fi
+done
+
+
+# dont foget to change default terminal to alacritty
+
+# set default shell for all users
+sudo usermod --shell /usr/bin/zsh root
+sudo usermod --shell /usr/bin/zsh alexzander
 
 # config docker
 sudo groupadd docker
