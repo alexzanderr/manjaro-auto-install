@@ -2,11 +2,12 @@
 
 # at manjaro boot, choose proprietary drivers
 
-current_working_dir=$(pwd)
+manjaro_auto_install_dir=$(pwd)
+export MANJARO_AUTO_INSTALL_DIR=$(pwd)
 
-source $current_working_dir/imports/test.bash
-source $current_working_dir/imports/colors.bash
-source $current_working_dir/imports/functions.bash
+source $manjaro_auto_install_dir/imports/test.bash
+source $manjaro_auto_install_dir/imports/colors.bash
+source $manjaro_auto_install_dir/imports/functions.bash
 
 
 # this is not good, this caused the pc not to boot 
@@ -156,8 +157,7 @@ commands_array[1]=$pacman_install_all
 commands_array[2]=$pamac_install_from_aur
 commands_array[3]=$pip_install_packages
 
-for command in "${commands_array[@]}"
-do
+for command in "${commands_array[@]}"; do
     # uncomment below to install everything
     # print_colored_and_exec "$command"
     echo "$command"
@@ -167,17 +167,35 @@ done
 
 # copy binaries to /usr/bin
 # img nu merge facut alias, aia e, il folosim ca binary
-sudo cp -v $current_working_dir/binaries/img /usr/bin
+sudo cp -v $manjaro_auto_install_dir/binaries/img /usr/bin
 
 
 mkdir -p ~/Alexzander__
 git clone https://github.com/alexzanderr/manjaro-21-xfce-settings
 
+
+
+
+
+
+
+
+
+
+
 # install lyra cursors (all of them)
-for archive in "$(ls $current_working_dir/archives)"; do
+for archive in "$(ls $manjaro_auto_install_dir/archives)"; do
     # decompress every tar gz and install cursors to
     # /usr/share/icons/...
-# done
+    tar -xzvf ./archives/$archive --directory=cursors/
+done
+
+for cursor in "$(ls $manjaro_auto_install_dir/cursors)"; do
+    # move every cursor folder to /usr/share/icons
+    sudo mv -v $manjaro_auto_install_dir/$cursor /usr/share/icons
+done
+
+
 
 # clone and build lite editor
 mkdir -p ~/Applications__
@@ -222,21 +240,21 @@ cd lite
 #     darktable: Alternative to Adobe Lightroom.
 
 # install zsh dependencies
-$current_working_dir/installers/zsh_install.bash
+$manjaro_auto_install_dir/installers/zsh_install.bash
 
 # install tmux dependencies
-$current_working_dir/installers/tmux_install.bash
+$manjaro_auto_install_dir/installers/tmux_install.bash
 
 # make symlink of default home folders that come with OS
-home_folders="~/Alexzander__/manjaro-21-xfce/home_folders"
-# curr_dir=$(pwd)
+# home_folders="~/Alexzander__/manjaro-21-xfce/home_folders"
+# # curr_dir=$(pwd)
 
-for item in $(ls $home_folders)
-do
-    if [[ -d $home_folders/$item ]]; then
-        ln -vs $home_folders/$item ~/$item
-    fi
-done
+# for item in $(ls $home_folders)
+# do
+#     if [[ -d $home_folders/$item ]]; then
+#         ln -vs $home_folders/$item ~/$item
+#     fi
+# done
 
 
 # dont foget to change default terminal to alacritty
@@ -249,12 +267,12 @@ sudo usermod --shell /usr/bin/zsh alexzander
 sudo groupadd docker
 sudo gpasswd -a ${USER} docker
 sudo systemctl enable docker
-sudo systemctl start docker
+# sudo systemctl start docker
 newgrp docker
 
 # enable teamviewer
 sudo systemctl enable teamviewerd
-sudo systemctl start teamviewerd
+# sudo systemctl start teamviewerd
 
 # here you need to select from prompt
 sudo pacman -S virtualbox
