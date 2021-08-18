@@ -31,11 +31,14 @@ psensor \
 lm_sensors \
 pa-applet \
 hddtemp \
+lua \
+luajit \
 xfce4-cpufreq-plugin \
 xfce4-goodies \
 xfce4-sensors-plugin \
 xfce4-cpugraph-plugin \
 xfce4-systemload-plugin \
+xfce4-netload-plugin \
 python-pip \
 tk \
 smartmontools \
