@@ -47,7 +47,6 @@ pypy3 \
 vlc \
 putty \
 nmap \
-steam \
 libreoffice-still \
 make \
 appimagelauncher \
@@ -123,6 +122,7 @@ teamviewer \
 # running sudo pip install will install packages into /usr/lib/python3.9/site-packages/
 # that makes then globally accessible for home users and als root user
 pip_install_packages="sudo pip install wpm \
+ptpython \
 Pigments \
 pyinstaller \
 playsound \
@@ -168,13 +168,15 @@ for command in "${commands_array[@]}"; do
 done
 
 
-# copy binaries to /usr/bin
-# img nu merge facut alias, aia e, il folosim ca binary
-sudo cp -v $manjaro_auto_install_dir/binaries/img /usr/bin
+# [[ -d "~/Alexzander__" ]] && rm -rf ~/Alexzander__
+# mkdir -vp ~/Alexzander__
 
+cd ~
+hg clone /run/media/alexzander/SSD/mercurial_repos/Alexzander__
 
-mkdir -p ~/Alexzander__
-git clone https://github.com/alexzanderr/manjaro-21-xfce-settings
+# after this we must run the script with stow
+
+# git clone https://github.com/alexzanderr/manjaro-21-xfce-settings
 
 
 
