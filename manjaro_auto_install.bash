@@ -173,22 +173,16 @@ done
 # mkdir -vp ~/Alexzander__
 
 cd ~
-hg clone /run/media/alexzander/SSD/mercurial_repos/Alexzander__
+# hg clone /run/media/alexzander/SSD/mercurial_repos/Alexzander__
 
-# after this we must run the script with stow
-
-# git clone https://github.com/alexzanderr/manjaro-21-xfce-settings
-
-
+# actually, avem probleme cu repo, ca cica e corupt si nu vrea sa se cloneze sau sa pusheze
+# trebuie sa facem ceva, in rest totul e cam gata
+# time to test in VM
 
 
 # setup dmenu
 cd $manjaro_xfce_21_folder/dotfiles/home/Applications__/dynamic_menu
 sudo make clean install
-
-
-
-
 
 
 # install zsh dependencies
@@ -202,6 +196,10 @@ sudo $manjaro_auto_install_dir/installers/tmux_install.bash
 # make symlink of default home folders that come with OS to my home folders
 cd $manjaro_xfce_21_folder/home_folders
 ./generate_symlinks.sh
+
+
+# after this we must run the script with stow
+# ./automatically_stow_and_override.bash
 
 
 # dont forget to change default terminal to alacritty
