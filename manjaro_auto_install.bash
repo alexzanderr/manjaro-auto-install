@@ -3,7 +3,7 @@
 # at manjaro boot, choose proprietary drivers
 
 manjaro_auto_install_dir=$(pwd)
-export MANJARO_AUTO_INSTALL_DIR=$(pwd)
+manjaro_xfce_21_folder="/home/alexzander/Alexzander__/manjaro-21-xfce"
 
 source $manjaro_auto_install_dir/imports/test.bash
 source $manjaro_auto_install_dir/imports/colors.bash
@@ -136,7 +136,7 @@ gtts \
 pyttsx3 \
 pytesseract \
 numpy \
-matploblib \
+matplotlib \
 bs4 \
 numba \
 pyzbar \
@@ -152,7 +152,8 @@ pyautogui \
 moviepy \
 pyowm \
 jedi \
-buildozer"
+buildozer \
+Pillow pynput pyaudio youtube_dl"
 
 declare -a commands_array
 commands_array[0]=$pacman_update_force
@@ -181,88 +182,33 @@ hg clone /run/media/alexzander/SSD/mercurial_repos/Alexzander__
 
 
 
+# setup dmenu
+cd $manjaro_xfce_21_folder/dotfiles/home/Applications__/dynamic_menu
+sudo make clean install
 
 
 
 
 
-
-
-# install lyra cursors (all of them)
-for archive in "$(ls $manjaro_auto_install_dir/archives)"; do
-    # decompress every tar gz and install cursors to
-    # /usr/share/icons/...
-    tar -xzvf ./archives/$archive --directory=cursors/
-done
-
-for cursor in "$(ls $manjaro_auto_install_dir/cursors)"; do
-    # move every cursor folder to /usr/share/icons
-    sudo mv -v $manjaro_auto_install_dir/$cursor /usr/share/icons
-done
-
-
-
-# clone and build lite editor
-mkdir -p ~/Applications__
-cd ~/Applications__
-git clone https://github.com/rxi/lite
-cd lite
-./build.sh
-
-# style -> matcha-dark-aliz
-# icons -> papirus-dark
-# system font -> roboto regular
-
-
-
-# rog gaming center:
-#     nu prea am vazut sa fie
-
-#     dar putem sa instalam utility stuff in loc de gaming
-#     ca pana la urma este o aplicatie care iti spune temp la CPU and GPU si
-#         alte detalii tehnice; trebuie sa aiba:
-#             - fan speed control
-#             - CPU temp
-#             - GPU temp
-#             - Mhz speed
-#             - free up memory button
-#             - total amount of storage used
-#             - total amount of ram used
-
-# rog aura core (responsible for coloring the laptop keyboard):
-#     https://github.com/wroberts/rogauracore
-
-#     https://askubuntu.com/questions/1234312/how-to-control-rgb-lighting-for-asus-rog-laptops-built-in-keyboard
-
-#     https://gitlab.com/CalcProgrammer1/OpenRGB
-
-# adobe alternatives:
-#     GIMP: Alternativee: Alternative to Adobe Illustrator. ...
-#     Scribus: Alternative to Adobe Photoshop. ...
-#     Inkscap to Adobe Indesign. ...
-#     OpenShot: Alternative to Adobe Premiere. ...
-#     Synfig: Alternative to Adobe Animate. ...
-#     darktable: Alternative to Adobe Lightroom.
 
 # install zsh dependencies
 $manjaro_auto_install_dir/installers/zsh_install.bash
+sudo $manjaro_auto_install_dir/installers/zsh_install.bash
 
 # install tmux dependencies
 $manjaro_auto_install_dir/installers/tmux_install.bash
+sudo $manjaro_auto_install_dir/installers/tmux_install.bash
 
-# make symlink of default home folders that come with OS
-# home_folders="~/Alexzander__/manjaro-21-xfce/home_folders"
-# # curr_dir=$(pwd)
-
-# for item in $(ls $home_folders)
-# do
-#     if [[ -d $home_folders/$item ]]; then
-#         ln -vs $home_folders/$item ~/$item
-#     fi
-# done
+# make symlink of default home folders that come with OS to my home folders
+cd $manjaro_xfce_21_folder/home_folders
+./generate_symlinks.sh
 
 
-# dont foget to change default terminal to alacritty
+# dont forget to change default terminal to alacritty
+# this is from my config files
+# trebuie sa alegi alacritty -e "%s" cand iti da prompt dupa ce ai facut
+
+
 
 # set default shell for all users
 sudo usermod --shell /usr/bin/zsh root
@@ -278,6 +224,19 @@ newgrp docker
 # enable teamviewer
 sudo systemctl enable teamviewerd
 # sudo systemctl start teamviewerd
+# sudo teamviewer --daemon start
+
+# bluetooth service
+sudo systemctl enable bluetooth.service
+
+# 
+# sudo systemctl enable sshd.service
+# sudo systemctl start sshd.service
+
 
 # here you need to select from prompt
 sudo pacman -S virtualbox
+
+
+reboot_prompt
+reboot

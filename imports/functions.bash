@@ -42,3 +42,10 @@ function print_colored_and_exec () {
     eval $1
 }
 
+
+
+function reboot_prompt () {
+    read -p "$(echo -e "${b}\n[press${e} ${GREEN}${b}<enter>${e} ${b}to reboot]:${e} ")"
+}
+
+
